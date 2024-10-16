@@ -1,0 +1,119 @@
+segui me, ho 10 immagini che sono legate al sushi
+poi devo creare nel db una collection chiamata Food, dove qui ci saranno diversi prodtti, drink e sushi appartenenti alla Modaligtà All you can eat
+
+Segui questo esempio
+
+const sushiItems = [
+  { id: 1, name: 'Nigiri', price: 12.99, image: '/assets/images/sushi1.png', category: 'sushi', isPaid: true, isAvailableAtLunch: true, isAvailableAtDinner: false, isAvailable: false },
+  { id: 2, name: 'Maki', price: 0, image: '/assets/images/sushi2.png', category: 'sushi', isPaid: false, isAvailableAtLunch: true, isAvailableAtDinner: true, isAvailable: true },
+  { id: 3, name: 'Temaki', price: 0, image: '/assets/images/sushi3.png', category: 'sushi', isPaid: false, isAvailableAtLunch: true, isAvailableAtDinner: true, isAvailable: true },
+  { id: 4, name: 'Sashimi', price: 15.99, image: '/assets/images/sushi4.png', category: 'sushi', isPaid: true, isAvailableAtLunch: false, isAvailableAtDinner: false, isAvailable: true },
+  { id: 5, name: 'Uramaki', price: 0, image: '/assets/images/sushi5.png', category: 'sushi', isPaid: false, isAvailableAtLunch: true, isAvailableAtDinner: true, isAvailable: false }, // Non disponibile
+  { id: 6, name: 'Futomaki', price: 0, image: '/assets/images/sushi6.png', category: 'sushi', isPaid: false, isAvailableAtLunch: true, isAvailableAtDinner: false, isAvailable: true },
+  { id: 7, name: 'Ebi Sushi', price: 16.99, image: '/assets/images/sushi7.png', category: 'rolls', isPaid: true, isAvailableAtLunch: true, isAvailableAtDinner: true, isAvailable: true },
+  { id: 8, name: 'Unagi Sushi', price: 0, image: '/assets/images/sushi8.png', category: 'rolls', isPaid: false, isAvailableAtLunch: true, isAvailableAtDinner: false, isAvailable: true },
+  { id: 9, name: 'Tuna Roll', price: 0, image: '/assets/images/sushi9.png', category: 'rolls', isPaid: false, isAvailableAtLunch: true, isAvailableAtDinner: true, isAvailable: true },
+  { id: 10, name: 'Salmon Roll', price: 0, image: '/assets/images/sushi10.png', category: 'rolls', isPaid: false, isAvailableAtLunch: true, isAvailableAtDinner: false, isAvailable: true },
+  { id: 11, name: 'Dragon Roll', price: 19.99, image: '/assets/images/sushi11.png', category: 'rolls', isPaid: true, isAvailableAtLunch: false, isAvailableAtDinner: true, isAvailable: true },
+  { id: 12, name: 'Rainbow Roll', price: 0, image: '/assets/images/sushi12.png', category: 'rolls', isPaid: false, isAvailableAtLunch: false, isAvailableAtDinner: true, isAvailable: true },
+];
+
+questo sarà collegato anche ad una collection chiamata Inventory
+
+
+Firestore
+│
+├── sessions
+│   ├── session_id (doc)
+│   │   ├── session_start_time: "2024-10-10T10:00:00Z"
+│   │   ├── session_end_time: null
+│   │   ├── table_id: "23"
+│   │   ├── is_active: true
+│   │   └── customer_count: 4
+│   │
+│   └── session_id_2 (doc)
+│       ├── session_start_time: "2024-10-10T10:30:00Z"
+│       ├── session_end_time: null
+│       ├── table_id: "24"
+│       ├── is_active: true
+│       └── customer_count: 2
+│
+├── orders
+│   ├── order_id (doc)
+│   │   ├── session_id: "session_id"
+│   │   ├── order_time: "2024-10-10T10:05:00Z"
+│   │   └── status: "in preparazione"
+│   │
+│   └── order_id_2 (doc)
+│       ├── session_id: "session_id"
+│       ├── order_time: "2024-10-10T10:35:00Z"
+│       └── status: "in preparazione"
+│
+└── orders (subcollection under order_id)
+    ├── items
+    │   ├── item_id (doc)
+    │   │   ├── dish_name: "Sushi Maki"
+    │   │   ├── quantity: 2
+    │   │   └── special_requests: ["senza wasabi", "extra soia"]
+    │   │
+    │   └── item_id_2 (doc)
+    │       ├── dish_name: "Sashimi Salmon"
+    │       ├── quantity: 1
+    │       └── special_requests: []
+    │
+    └── items (subcollection under order_id_2)
+        ├── item_id_3 (doc)
+        │   ├── dish_name: "Tempura"
+        │   ├── quantity: 1
+        │   └── special_requests: ["senza sale"]
+        │
+        └── item_id_4 (doc)
+            ├── dish_name: "Uramaki"
+            ├── quantity: 3
+            └── special_requests: []
+
+
+
+
+
+products
+│
+├── product_id (doc)
+│   ├── name: "Nigiri"
+│   ├── price: 12.99
+│   ├── images: ["/assets/images/sushi1.png", "/assets/images/sushi1_1.png"]
+│   ├── category: "sushi"
+│   ├── isPaid: true
+│   ├── isAvailableAtLunch: true
+│   ├── isAvailableAtDinner: false
+│   └── isAvailable: true
+│
+├── product_id_2 (doc)
+│   ├── name: "Maki"
+│   ├── price: 0
+│   ├── images: ["/assets/images/sushi2.png"]
+│   ├── category: "sushi"
+│   ├── isPaid: false
+│   ├── isAvailableAtLunch: true
+│   ├── isAvailableAtDinner: true
+│   └── isAvailable: true
+│
+├── product_id_3 (doc)
+│   ├── name: "Ebi Sushi"
+│   ├── price: 16.99
+│   ├── images: ["/assets/images/sushi7.png"]
+│   ├── category: "rolls"
+│   ├── isPaid: true
+│   ├── isAvailableAtLunch: true
+│   ├── isAvailableAtDinner: true
+│   └── isAvailable: true
+│
+└── ...
+
+
+
+category_img/sushi1.png
+product_img/sushi1.png
+
+
+category_img/sushi3.png
