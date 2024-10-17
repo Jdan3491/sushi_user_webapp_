@@ -301,21 +301,6 @@ const SelectedItems = () => {
           />
         </div>
 
-        <div className="mb-4">
-          <select
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-            className="border rounded-lg py-2 px-4 w-full"
-          >
-            <option value="">Tutte le categorie</option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.path}>
-                {category.path.split('/').pop()}
-              </option>
-            ))}
-          </select>
-        </div>
-
         <ul className="divide-y divide-gray-300">
           {sortedItems.length > 0 ? (
             sortedItems.map((item) => (
@@ -428,20 +413,6 @@ const SelectedItems = () => {
         />
       </div>
 
-      <div className="mb-4">
-        <select
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-          className="border rounded-lg py-2 px-4 w-full"
-        >
-          <option value="">Tutte le categorie</option>
-          {categories.map((category) => (
-            <option key={category.id} value={category.path}>
-              {category.path.split('/').pop()}
-            </option>
-          ))}
-        </select>
-      </div>
 
       <ul className="divide-y divide-gray-300">
         {sortedItems.length > 0 ? (
