@@ -1,23 +1,29 @@
 {
   "compilerOptions": {
-    "target": "ESNext", // Set the appropriate target (e.g., ES6, ESNext)
-    "module": "ESNext", // or 'CommonJS', depending on your setup
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "allowJs": true, // Allow JS/JSX files
-    "jsx": "react-jsx", // Enable JSX syntax in React
-    "moduleResolution": "node",
-    "resolveJsonModule": true, // To import JSON modules
-    "esModuleInterop": true,
-    "isolatedModules": true,
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
     "skipLibCheck": true,
-    "strict": true, // Enable strict mode for better type checking
-    "forceConsistentCasingInFileNames": true
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": false,  // Set to allow file output
+    "declaration": true,  // Emit declaration files (.d.ts)
+    "declarationDir": "./dist/types",
+    "jsx": "react-jsx",
+    "outDir": "./dist/app",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"], // Includes all files in the src folder
-  "exclude": ["node_modules"], // Excludes node_modules
-  "files": [], // This can be left empty if you're using "include"
+  "include": ["src/**/*"],
   "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
+    { "path": "./tsconfig.app.json" }
   ]
 }
