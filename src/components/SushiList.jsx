@@ -68,7 +68,7 @@ const SushiList = ({ category, meal }) => {
             <p className="text-gray-600 text-lg">Nessun sushi trovato per questa categoria.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-48">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-48 scroll-m-44">
             {filteredSushiItems.map((sushi) => (
               <SushiCard 
                 key={`sushi-${sushi.id}-${sushi.name.replace(/\s+/g, '-').toLowerCase()}`} 
