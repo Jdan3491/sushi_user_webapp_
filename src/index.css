@@ -15,6 +15,32 @@ html, body{
   pointer-events: none;
 }
 
+aside {
+  position: relative;
+}
+
+/* Mobile Sidebar Styles */
+.md\\:hidden {
+  display: none;
+}
+
+@media (max-width: 768px) { /* Adjust as necessary */
+  .md\\:hidden {
+    display: flex;
+    overflow-x: auto; /* Allow horizontal scrolling */
+    padding: 0.5rem;
+    height: 56px; /* Adjust height to fit your design */
+  }
+}
+
+/* Desktop Sidebar Styles */
+.md\\:flex {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Allow vertical scrolling */
+  height: 100vh; /* Full height */
+}
+
 /* Disabilita la selezione del testo */
 * {
   user-select: none;
@@ -40,4 +66,14 @@ body {
 
 .custom-scrollbar::-webkit-scrollbar-track {
   background-color: #e5e7eb !important; /* Colore del track (Tailwind: gray-200) */
+}
+
+
+.fixed {
+  position: fixed;
+  z-index: 1000;
+}
+
+.transition-transform {
+  transition: transform 0.3s ease-in-out;
 }

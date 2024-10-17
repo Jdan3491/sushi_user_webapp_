@@ -53,7 +53,7 @@ const SushiList = ({ category, meal }) => {
 
   return (
     <main 
-      className="bg-secondary p-4 h-screen w-full md:w-3/4 overflow-y-auto custom-scrollbar"
+      className="bg-secondary p-4 h-screen w-full md:w-3/4 overflow-y-auto custom-scrollbar mb-20"
       style={!category ? { backgroundImage, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}
     >
       {loading ? (
@@ -68,7 +68,7 @@ const SushiList = ({ category, meal }) => {
             <p className="text-gray-600 text-lg">Nessun sushi trovato per questa categoria.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-48">
             {filteredSushiItems.map((sushi) => (
               <SushiCard 
                 key={`sushi-${sushi.id}-${sushi.name.replace(/\s+/g, '-').toLowerCase()}`} 

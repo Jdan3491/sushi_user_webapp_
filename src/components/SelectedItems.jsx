@@ -5,6 +5,7 @@ import { AppContext } from '../AppContext';
 import { getAuth } from "firebase/auth";
 import { getFirestore, collection, onSnapshot, doc, setDoc, query, where } from "firebase/firestore";
 import { toast, ToastContainer } from 'react-toastify';
+import { useMediaQuery } from 'react-responsive';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -22,12 +23,12 @@ const SelectedItems = () => {
   const [isActive, setIsActive] = useState(false);
   const [orderId, setOrderId] = useState(localStorage.getItem('orderId') || '');
   const [isLoadingOrder, setIsLoadingOrder] = useState(false); // Nuovo stato per il caricamento
-
+  const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
   const storageBaseUrl = import.meta.env.VITE_SUSHI_FIREBASE_STORAGE_URL;
   const altParam = import.meta.env.VITE_SUSHI_ALT_PARAM;
-
+  const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
   const db = getFirestore();
 
   // Fetch categories from Firestore
@@ -47,6 +48,10 @@ const SelectedItems = () => {
 
     fetchCategories();
   }, [db]);
+
+  const toggleDrawer = () => {
+    setIsOpen(!isOpen);
+  };
 
   // Fetch session data from Firestore
   useEffect(() => {
@@ -225,7 +230,180 @@ const SelectedItems = () => {
   const sortedItems = [...regularItems, ...promotionalItems]; // Regular items first, promo last
 
   return (
-    <aside className={`hidden md:flex md:w-1/2 p-4 flex-col bg-gray-100 h-screen overflow-y-auto custom-scrollbar`}>
+    <>
+  {/* Mobile Drawer Trigger */}
+  {isMobile && !isOpen && (
+    <button
+      onClick={toggleDrawer}
+      className="fixed bottom-4 right-4 bg-primary text-white p-4 rounded-full shadow-lg z-50"
+    >
+      <FaPlus size={24} />
+    </button>
+  )}
+
+  {/* Overlay and Drawer for Mobile View */}
+  {isOpen && isMobile && (
+    <>
+      <div 
+        onClick={toggleDrawer} 
+        className="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300" 
+      />
+      
+      <div
+        className={`overflow-y-auto scroll-m-2.5 fixed top-0 right-0 w-3/4 h-full bg-white z-50 p-4 transform transition-transform duration-300 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+      >
+
+        <button onClick={toggleDrawer} className="absolute top-4 right-4 text-gray-600">
+          Chiudi
+        </button>
+
+        <div className="bg-gray-200 p-4 text-center mt-12">
+          <p className="text-gray-600">
+            &copy; {new Date().getFullYear()} Daniele Cantoro. All rights reserved.
+          </p>
+          <p className="text-gray-600">
+            GitHub: 
+            <a 
+              href="https://github.com/Jdan3491" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-blue-500 hover:underline"
+            >
+              Jdan3491
+            </a>
+          </p>
+        </div>
+
+        
+        
+        <div className="flex items-center justify-between mb-4 bg-blue-50 p-4 rounded-lg shadow-md">
+        <div>
+          <h1 className="text-lg font-bold text-gray-800">Tavolo #{tableId || 'Caricamento...'}</h1>
+          <h2 className="text-lg font-bold text-gray-800">Numero Persone: {customerCount || 'Caricamento...'}</h2>
+        </div>
+        <div className="flex space-x-2 mb-4">
+          <button
+            onClick={callWaiter}
+            className="h-16 w-16 bg-primary rounded-full flex items-center justify-center hover:bg-red-600 text-white shadow-md transition duration-200"
+          >
+            <PiTelegramLogoFill size={24} />
+          </button>
+        </div>
+      </div>
+        
+        <div className="mb-4">
+          <input
+            type="text"
+            placeholder="Cerca prodotto..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="border rounded-lg py-2 px-4 w-full"
+          />
+        </div>
+
+        <div className="mb-4">
+          <select
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            className="border rounded-lg py-2 px-4 w-full"
+          >
+            <option value="">Tutte le categorie</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.path}>
+                {category.path.split('/').pop()}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <ul className="divide-y divide-gray-300">
+          {sortedItems.length > 0 ? (
+            sortedItems.map((item) => (
+              <li key={item.id} className="flex items-center justify-between py-2">
+                <div className="flex items-center">
+                  <img
+                    src={getImageUrl(item.images[0])}
+                    alt={item.name}
+                    className="w-16 h-16 object-cover rounded-lg shadow-md mr-2"
+                    loading="lazy"
+                  />
+                  <div className="flex flex-col">
+                    <span className="font-bold mr-2 text-gray-800">{item.name}</span>
+                    <span className="text-gray-600 text-sm">{item.category.split('/').pop()}</span>
+                    {item.rating && (
+                      <div className="flex text-yellow-500">
+                        {Array.from({ length: 5 }, (_, index) => (
+                          <span key={index} className={`material-icons ${index < item.rating ? 'text-yellow-500' : 'text-gray-300'}`}>
+                            ★
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex items-center">
+                    {item.quantity > 1 ? (
+                      <button
+                        onClick={() => decreaseCount(item.id)}
+                        className="bg-red-600 text-white rounded-lg p-1 mx-1 hover:bg-red-700 transition duration-200 shadow-md"
+                      >
+                        <FaMinus />
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => decreaseCount(item.id)}
+                        className="bg-red-600 text-white rounded-lg p-1 mx-1 hover:bg-red-700 transition duration-200 shadow-md"
+                      >
+                        <FaTrash />
+                      </button>
+                    )}
+                    <span className="text-gray-700">{item.quantity}</span>
+                    <button
+                      onClick={() => increaseCount(item.id)}
+                      className="bg-green-600 text-white rounded-lg p-1 mx-1 hover:bg-green-700 transition duration-200 shadow-md"
+                    >
+                      <FaPlus />
+                    </button>
+                  </div>
+                </div>
+                <span className="font-bold text-gray-800">{(products[item.id]?.price || 0) * item.quantity} €</span>
+              </li>
+            ))
+          ) : (
+            <li className="text-center text-gray-600">Nessun prodotto selezionato.</li>
+          )}
+        </ul>
+
+        <div className="mt-4 bg-gray-200 p-4 rounded-lg shadow-md">
+          <h3 className="font-bold text-lg">
+            Totale di questo ordine: <span className="text-xl font-semibold">{isLoadingOrder ? 'Caricamento...' : (totalPrice || 0)} €</span>
+          </h3>
+          <h3 className="font-bold text-lg mt-2">
+            Totale finale: <span className="text-xl font-semibold">{isLoadingOrder ? 'Caricamento...' : (cumulativeTotal || 'Caricamento...')} €</span>
+          </h3>
+        </div>
+      </div>
+    </>
+  )}
+
+  {/* Desktop View */}
+  {!isMobile && (
+    <aside className="md:w-1/2 p-4 bg-gray-100 h-screen overflow-y-auto custom-scrollbar">
+      <div className="bg-gray-200 p-4 text-center">
+          <p className="text-gray-600">
+            &copy; {new Date().getFullYear()} Daniele Cantoro. All rights reserved.
+          </p>
+          <p className="text-gray-600">
+            GitHub: 
+            <a 
+              href="https://github.com/Jdan3491" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-blue-500 hover:underline"
+            >
+              Jdan3491
+            </a>
+          </p>
+        </div>
       <div className="flex items-center justify-between mb-4 bg-blue-50 p-4 rounded-lg shadow-md">
         <div>
           <h1 className="text-lg font-bold text-gray-800">Tavolo #{tableId || 'Caricamento...'}</h1>
@@ -240,7 +418,6 @@ const SelectedItems = () => {
           </button>
         </div>
       </div>
-    
       <div className="mb-4">
         <input
           type="text"
@@ -250,7 +427,7 @@ const SelectedItems = () => {
           className="border rounded-lg py-2 px-4 w-full"
         />
       </div>
-    
+
       <div className="mb-4">
         <select
           value={selectedCategory}
@@ -260,12 +437,12 @@ const SelectedItems = () => {
           <option value="">Tutte le categorie</option>
           {categories.map((category) => (
             <option key={category.id} value={category.path}>
-              {category.path.split('/').pop()} {/* Show only the last part of the path */}
+              {category.path.split('/').pop()}
             </option>
           ))}
         </select>
       </div>
-    
+
       <ul className="divide-y divide-gray-300">
         {sortedItems.length > 0 ? (
           sortedItems.map((item) => (
@@ -280,7 +457,6 @@ const SelectedItems = () => {
                 <div className="flex flex-col">
                   <span className="font-bold mr-2 text-gray-800">{item.name}</span>
                   <span className="text-gray-600 text-sm">{item.category.split('/').pop()}</span>
-                  {/* Add rating */}
                   {item.rating && (
                     <div className="flex text-yellow-500">
                       {Array.from({ length: 5 }, (_, index) => (
@@ -323,18 +499,21 @@ const SelectedItems = () => {
           <li className="text-center text-gray-600">Nessun prodotto selezionato.</li>
         )}
       </ul>
-    
-      <ToastContainer position="top-center" autoClose={5000} hideProgressBar={false} closeOnClick pauseOnHover draggable />
-    
-      <div className="bg-gray-200 p-4 rounded-lg shadow-md mt-4">
-        <h3 className="font-bold text-lg text-gray-800">
+
+      <div className="mt-4 bg-gray-200 p-4 rounded-lg shadow-md">
+        <h3 className="font-bold text-lg">
           Totale di questo ordine: <span className="text-xl font-semibold">{isLoadingOrder ? 'Caricamento...' : (totalPrice || 0)} €</span>
         </h3>
-        <h3 className="font-bold text-lg text-gray-800 mt-2">
+        <h3 className="font-bold text-lg mt-2">
           Totale finale: <span className="text-xl font-semibold">{isLoadingOrder ? 'Caricamento...' : (cumulativeTotal || 'Caricamento...')} €</span>
         </h3>
       </div>
     </aside>
+  )}
+
+  <ToastContainer position="top-center" autoClose={5000} hideProgressBar={false} closeOnClick pauseOnHover draggable />
+</>
+
   );
   
 };
