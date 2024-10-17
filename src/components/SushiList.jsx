@@ -76,7 +76,7 @@ const SushiList = ({ category, meal }) => {
                 isLunchTime={isLunchTime} 
               />
             ))}
-            <div className="block md:hidden h-1"></div>
+            <div className="block md:hidden h-1 my-24"></div>
           </div>
         )
       ) : (
