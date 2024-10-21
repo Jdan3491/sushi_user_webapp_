@@ -18,7 +18,6 @@
 - **Frontend**: React.js, HTML5, CSS3, JavaScript
 - **Backend**: Firebase Cloud Functions, Firestore (NoSQL)
 - **Database**: Firestore per la gestione in tempo reale dei dati.
-- **Comunicazione in Tempo Reale**: WebSocket, Server-Sent Events (SSE) per notifiche istantanee.
 - **Sicurezza**: HTTPS, SSL/TLS per garantire la protezione dei dati sensibili.
 - **Supporto Offline**: PWA (Progressive Web App) per la navigazione limitata anche senza connessione.
 
@@ -37,14 +36,24 @@ Segui questi passaggi per configurare il progetto localmente:
 L'app sarà disponibile su http://localhost:3000/.
 
 Screenshot del Progetto
-Schermata di Accesso al Tavolo (QR Code)
+### Schermata di Accesso al Tavolo (QR Code)
+![Schermata QR Code](./documents/Macbook-Air-sushi-user-webapp.vercel.app.png)
 
-Menu Interattivo
+### Menu Interattivo su Macbook
+![Menu Interattivo](./documents/Macbook-Air-sushi-user-webapp.vercel.app%20(1).png)
 
-Creazione Ordine
+### Creazione Ordine
+![Creazione Ordine](./documents/Macbook-Air-sushi-user-webapp.vercel.app%20(2).png)
 
-Cartella Documenti
-Puoi accedere a tutti i documenti e gli screenshot nella cartella documents.
+### Monitoraggio Ordine su Macbook
+![Monitoraggio Ordine](./documents/Macbook-Air-sushi-user-webapp.vercel.app%20(3).png)
+
+### Pagamento Online su iPhone 12 PRO MAX
+![Pagamento su iPhone 12](./documents/iPhone-12-PRO-MAX-sushi-user-webapp.vercel.app%20(1).png)
+
+### Monitoraggio Ordine su iPhone 12 PRO MAX
+![Monitoraggio su iPhone 12](./documents/iPhone-12-PRO-MAX-sushi-user-webapp.vercel.app%20(2).png)
+
 
 
 ### Dettagli importanti:
