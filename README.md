@@ -42,7 +42,7 @@ Screenshot del Progetto
 ### Menu Interattivo su Macbook
 ![Menu Interattivo](./documents/Macbook-Air-sushi-user-webapp.vercel.app%20(1).png)
 
-### Creazione Ordine
+### Info Prodotto
 ![Creazione Ordine](./documents/Macbook-Air-sushi-user-webapp.vercel.app%20(2).png)
 
 ### Monitoraggio Ordine su Macbook
